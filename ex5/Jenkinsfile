@@ -7,13 +7,13 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'sudo docker build -t $IMAGE_NAME .'
+        sh 'docker build -t $IMAGE_NAME -f ex5/Dockerfile ex5/'
       }
     }
     stage('Login & Push') {
       steps {
         sh "echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin"
-        sh 'sudo docker push $IMAGE_NAME'
+        sh 'docker push $IMAGE_NAME'
       }
     }
   }
