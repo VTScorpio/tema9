@@ -1,0 +1,109 @@
+Started by user admin
+Obtained ex5/Jenkinsfile from git https://github.com/VTScorpio/tema9.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on agent-remote in /home/eu/workspace/qa-docker-file
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-pat
+Fetching changes from the remote Git repository
+Checking out Revision f4c4c37d186da21a78cbb7f27ca76d9195cf3e00 (refs/remotes/origin/main)
+Commit message: "?"
+ > git rev-parse --resolve-git-dir /home/eu/workspace/qa-docker-file/.git # timeout=10
+ > git config remote.origin.url https://github.com/VTScorpio/tema9.git # timeout=10
+Fetching upstream changes from https://github.com/VTScorpio/tema9.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials GitHub Personal Access Token
+ > git fetch --tags --force --progress -- https://github.com/VTScorpio/tema9.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f4c4c37d186da21a78cbb7f27ca76d9195cf3e00 # timeout=10
+ > git rev-list --no-walk 788c6bc923d105aae5795aa7d3a56132e85b5d67 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKERHUB_CRED or $DOCKERHUB_CRED_PSW
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ docker build -t vtscorpio/script-image-jenkins:latest -f ex5/Dockerfile ex5/
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 124B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:latest
+#2 ...
+
+#3 [auth] library/ubuntu:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:latest
+#2 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/3] FROM docker.io/library/ubuntu:latest@sha256:7c06e91f61fa88c08cc74f7e1b7c69ae24910d745357e0dfe1d2c0322aaf20f9
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 30B done
+#6 DONE 0.0s
+
+#7 [2/3] COPY script.sh /script.sh
+#7 CACHED
+
+#8 [3/3] RUN chmod +x /script.sh
+#8 CACHED
+
+#9 exporting to image
+#9 exporting layers done
+#9 writing image sha256:7397252ba7a79dee4e87cbf70723bbeb02237407145f00a9230cc4b68d1da82e done
+#9 naming to docker.io/vtscorpio/script-image-jenkins:latest done
+#9 DONE 0.0s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Login & Push)
+[Pipeline] sh
+Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+		 Affected argument(s) used the following variable(s): [DOCKERHUB_CRED_PSW]
+		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
++ echo ****
++ docker login -u vtscorpio --password-stdin
+Login Succeeded
+[Pipeline] sh
++ docker push vtscorpio/script-image-jenkins:latest
+The push refers to repository [docker.io/vtscorpio/script-image-jenkins]
+7027d375ebba: Preparing
+acd1b738a8f7: Preparing
+cd9664b1462e: Preparing
+acd1b738a8f7: Pushed
+7027d375ebba: Pushed
+cd9664b1462e: Pushed
+latest: digest: sha256:839c8ded9db939753d1807505b0fa8f7e7e9fefcebef4c62f2595767ff6211b7 size: 943
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
