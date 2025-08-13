@@ -1,0 +1,20 @@
+pipeline {
+  agent any
+  environment {
+    DOCKERHUB_CRED = credentials('dockerhub') // Username + Password
+    IMAGE_NAME = "utilizator/script-image"
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t $IMAGE_NAME .'
+      }
+    }
+    stage('Login & Push') {
+      steps {
+        sh "echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin"
+        sh 'docker push $IMAGE_NAME'
+      }
+    }
+  }
+}

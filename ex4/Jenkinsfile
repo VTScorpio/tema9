@@ -1,0 +1,29 @@
+pipeline {
+    agent { label 'agent-remote' }
+    parameters {
+        string(name: 'HOST1', defaultValue: 'google.com')
+        string(name: 'HOST2', defaultValue: 'github.com')
+        string(name: 'HOST3', defaultValue: 'jenkins.io')
+    }
+    stages {
+        stage('Ping Parallel') {
+            parallel {
+                stage('Ping 1') {
+                    steps {
+                        sh "ping -c 3 ${params.HOST1}"
+                    }
+                }
+                stage('Ping 2') {
+                    steps {
+                        sh "ping -c 3 ${params.HOST2}"
+                    }
+                }
+                stage('Ping 3') {
+                    steps {
+                        sh "ping -c 3 ${params.HOST3}"
+                    }
+                }
+            }
+        }
+    }
+}
