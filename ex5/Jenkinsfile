@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CRED = credentials('dockerhub') // Username + Password
-    IMAGE_NAME = "utilizator/script-image"
+    IMAGE_NAME = "vtscorpio/script-image-jenkins"
   }
   stages {
     stage('Build') {
